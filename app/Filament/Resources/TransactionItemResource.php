@@ -17,6 +17,7 @@ class TransactionItemResource extends Resource
 {
     protected static ?string $model = TransactionItem::class;
 
+    protected static ?string $navigationGroup = 'Transaksi';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -44,10 +45,11 @@ class TransactionItemResource extends Resource
                 Tables\Columns\TextColumn::make('transaction.id')->label('Transaksi'),
                 Tables\Columns\TextColumn::make('game.title')->label('Game'),
                 Tables\Columns\TextColumn::make('price_at_purchase')->money('IDR'),
-                Tables\Columns\TextColumn::make('created_at')->label('Dibeli')->since(),
+                Tables\Columns\TextColumn::make('created_at')->label('Dibuat')->date(),
             ])
             ->filters([])
-            ->actions([
+             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -70,7 +72,14 @@ class TransactionItemResource extends Resource
         return [
             'index' => Pages\ListTransactionItems::route('/'),
             'create' => Pages\CreateTransactionItem::route('/create'),
+            'view' => Pages\ViewTransactionItem::route('/{record}'),
             'edit' => Pages\EditTransactionItem::route('/{record}/edit'),
         ];
     }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+         return false;
+    }
+
 }

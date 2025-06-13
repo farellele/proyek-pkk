@@ -13,6 +13,18 @@ Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+Route::view('library', 'library')
+    ->middleware(['auth', 'verified'])
+    ->name('library');
+
+Route::view('game', 'game')
+    ->middleware(['auth', 'verified'])
+    ->name('game');
+
+Route::view('cart', 'cart')
+    ->middleware(['auth', 'verified'])
+    ->name('cart');
+
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
 
