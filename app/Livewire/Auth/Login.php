@@ -29,7 +29,6 @@ class Login extends Component
     public function login(): void
     {
         $this->validate();
-
         $this->ensureIsNotRateLimited();
 
         if (! Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
@@ -37,6 +36,16 @@ class Login extends Component
 
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
+            ]);
+        }
+
+        $user = Auth::user();
+
+        // 🛑 Cek apakah user belum memiliki role
+        if (is_null($user->role)) {
+            Auth::logout();
+            throw ValidationException::withMessages([
+                'email' => 'Akun anda belum diaktifkan. Silakan hubungi admin untuk mendapatkan role.',
             ]);
         }
 
